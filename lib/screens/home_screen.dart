@@ -1,5 +1,7 @@
-// screens/home_screen.dart
 import 'package:flutter/material.dart';
+import 'jadwal_konsultasi_screen.dart';
+import 'booking_screen.dart';
+import 'rekam_medis_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -14,14 +16,14 @@ class _HomeScreenState extends State<HomeScreen> {
     {
       'title': 'Jadwal\nKonsultasi',
       'icon': Icons.schedule,
-      'color': const Color.fromARGB(255, 211, 11, 181),
-      'route': '/consultation',
+      'color': Colors.blue,
+      'route': '/jadwal-konsultasi',
     },
     {
       'title': 'Booking',
       'icon': Icons.book_online,
-      'color': const Color.fromARGB(255, 0, 106, 255),
-      'route': '/consultation',
+      'color': Colors.green,
+      'route': '/booking',
     },
     {
       'title': 'Rekam\nMedis',
@@ -68,10 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           CircleAvatar(
             backgroundColor: Color(0xFF9C88FF).withOpacity(0.1),
-            child: Icon(
-              Icons.person,
-              color: Color(0xFF9C88FF),
-            ),
+            child: Icon(Icons.person, color: Color(0xFF9C88FF)),
           ),
           SizedBox(width: 12),
           Text(
@@ -86,13 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       actions: [
         IconButton(
-          icon: Icon(
-            Icons.notifications_outlined,
-            color: Colors.grey[600],
-          ),
-          onPressed: () {
-            // Handle notification tap
-          },
+          icon: Icon(Icons.notifications_outlined, color: Colors.grey[600]),
+          onPressed: () {},
         ),
       ],
     );
@@ -115,10 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(height: 8),
           Text(
             'Kesehatan Anda adalah prioritas kami',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[600],
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.grey[600]),
           ),
         ],
       ),
@@ -130,22 +121,54 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: _menuItems.map((item) {
-          return Expanded(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 4),
-              child: _buildMenuCard(
-                title: item['title'],
-                icon: item['icon'],
-                color: item['color'],
-                onTap: () {
-                  Navigator.pushNamed(context, item['route']);
-                },
-              ),
-            ),
-          );
-        }).toList(),
+        children:
+            _menuItems.map((item) {
+              return Expanded(
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 4),
+                  child: _buildMenuCard(
+                    title: item['title'],
+                    icon: item['icon'],
+                    color: item['color'],
+                    onTap: () {
+                      if (item['route'] == '/jadwal-konsultasi') {
+                        Navigator.of(
+                          context,
+                        ).push(_fadeSlideRoute(const JadwalKonsultasiScreen()));
+                      } else if (item['route'] == '/booking') {
+                        Navigator.of(
+                          context,
+                        ).push(_fadeSlideRoute(const BookingScreen()));
+                      } else if (item['route'] == '/medical-history') {
+                        Navigator.of(
+                          context,
+                        ).push(_fadeSlideRoute(const RekamMedisScreen()));
+                      }
+                    },
+                  ),
+                ),
+              );
+            }).toList(),
       ),
+    );
+  }
+
+  PageRouteBuilder _fadeSlideRoute(Widget screen) {
+    return PageRouteBuilder(
+      transitionDuration: const Duration(milliseconds: 500),
+      pageBuilder: (context, animation, secondaryAnimation) => screen,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1.0, 0.0),
+              end: Offset.zero,
+            ).animate(animation),
+            child: child,
+          ),
+        );
+      },
     );
   }
 
@@ -155,50 +178,49 @@ class _HomeScreenState extends State<HomeScreen> {
     required Color color,
     required VoidCallback onTap,
   }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey[200]!),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 1,
-              blurRadius: 4,
-              offset: Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.grey[200]!),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 4,
+                offset: Offset(0, 2),
               ),
-              child: Icon(
-                icon,
-                color: color,
-                size: 24,
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(icon, color: color, size: 24),
               ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: Colors.black87,
-                height: 1.2,
+              SizedBox(height: 8),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black87,
+                  height: 1.2,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -243,10 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildProductCard({
-    required String name,
-    required String price,
-  }) {
+  Widget _buildProductCard({required String name, required String price}) {
     return Container(
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -288,10 +307,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 2),
                 Text(
                   price,
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: Colors.grey[600],
-                  ),
+                  style: TextStyle(fontSize: 10, color: Colors.grey[600]),
                 ),
               ],
             ),
@@ -308,11 +324,9 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           _currentIndex = index;
         });
-        
-        // Handle navigation based on index
+
         switch (index) {
           case 0:
-            // Already on home
             break;
           case 1:
             Navigator.pushNamed(context, '/medical-history');
@@ -328,18 +342,12 @@ class _HomeScreenState extends State<HomeScreen> {
       unselectedItemColor: Colors.grey[400],
       elevation: 8,
       items: [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
         BottomNavigationBarItem(
           icon: Icon(Icons.description),
           label: 'Rekam Medis',
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Profile',
-        ),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
       ],
     );
   }
