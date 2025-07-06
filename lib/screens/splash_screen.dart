@@ -5,69 +5,56 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF9C88FF),
+      backgroundColor: Colors.white, // Changed to white background like in the image
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Logo Container
+            // Logo Container - Updated to match the stethoscope design
             Container(
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 10,
-                    offset: Offset(0, 5),
-                  ),
-                ],
-              ),
-              child: Icon(
-                Icons.medical_services,
-                size: 50,
-                color: Color(0xFF9C88FF),
+              width: 80,
+              height: 80,
+              child: CustomPaint(
+                painter: StethoscopePainter(),
               ),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 20),
             
-            // App Name
+            // App Name - Updated colors to match the image
             Text(
               'Meditech',
               style: TextStyle(
                 fontSize: 36,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
-                letterSpacing: 2,
+                color: Color(0xFF7B2CBF), // Purple color like in the image
+                letterSpacing: 1,
               ),
             ),
             SizedBox(height: 10),
             
-            // Subtitle
-            Text(
-              'Solusi Kesehatan Digital',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white.withOpacity(0.8),
-              ),
-            ),
+            // Subtitle - Removed as it's not in the image
+            // Text(
+            //   'Solusi Kesehatan Digital',
+            //   style: TextStyle(
+            //     fontSize: 16,
+            //     color: Colors.white.withOpacity(0.8),
+            //   ),
+            // ),
             SizedBox(height: 80),
             
-            // Start Button
+            // Start Button - Updated styling
             ElevatedButton(
               onPressed: () {
                 Navigator.pushReplacementNamed(context, '/register');
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Color(0xFF9C88FF),
+                backgroundColor: Color(0xFF7B2CBF), // Purple background
+                foregroundColor: Colors.white,
                 padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
-                elevation: 5,
+                elevation: 3,
               ),
               child: Text(
                 'Mulai',
@@ -79,7 +66,7 @@ class SplashScreen extends StatelessWidget {
             ),
             SizedBox(height: 20),
             
-            // Login Link
+            // Login Link - Updated color
             TextButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/login');
@@ -87,7 +74,7 @@ class SplashScreen extends StatelessWidget {
               child: Text(
                 'Sudah punya akun? Login',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Color(0xFF7B2CBF), // Purple color
                   fontSize: 16,
                 ),
               ),
@@ -97,4 +84,48 @@ class SplashScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+// Custom painter for stethoscope icon to match the design
+class StethoscopePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()
+      ..color = Color(0xFF6C5CE7) // Blue color for stethoscope
+      ..strokeWidth = 3.0
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+
+    final Paint fillPaint = Paint()
+      ..color = Color(0xFF6C5CE7)
+      ..style = PaintingStyle.fill;
+
+    // Draw stethoscope earpieces
+    canvas.drawCircle(Offset(size.width * 0.2, size.height * 0.2), 4, fillPaint);
+    canvas.drawCircle(Offset(size.width * 0.8, size.height * 0.2), 4, fillPaint);
+
+    // Draw stethoscope tubes
+    Path leftTube = Path();
+    leftTube.moveTo(size.width * 0.2, size.height * 0.2);
+    leftTube.quadraticBezierTo(
+      size.width * 0.3, size.height * 0.4,
+      size.width * 0.5, size.height * 0.6
+    );
+    canvas.drawPath(leftTube, paint);
+
+    Path rightTube = Path();
+    rightTube.moveTo(size.width * 0.8, size.height * 0.2);
+    rightTube.quadraticBezierTo(
+      size.width * 0.7, size.height * 0.4,
+      size.width * 0.5, size.height * 0.6
+    );
+    canvas.drawPath(rightTube, paint);
+
+    // Draw chest piece
+    canvas.drawCircle(Offset(size.width * 0.5, size.height * 0.75), 8, paint);
+    canvas.drawCircle(Offset(size.width * 0.5, size.height * 0.75), 5, fillPaint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }

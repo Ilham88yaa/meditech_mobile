@@ -14,13 +14,13 @@ class _HomeScreenState extends State<HomeScreen> {
     {
       'title': 'Jadwal\nKonsultasi',
       'icon': Icons.schedule,
-      'color': Colors.blue,
+      'color': const Color.fromARGB(255, 211, 11, 181),
       'route': '/consultation',
     },
     {
       'title': 'Booking',
       'icon': Icons.book_online,
-      'color': Colors.green,
+      'color': const Color.fromARGB(255, 0, 106, 255),
       'route': '/consultation',
     },
     {
