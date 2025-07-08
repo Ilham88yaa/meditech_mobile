@@ -14,21 +14,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Map<String, dynamic>> _menuItems = [
     {
-      'title': 'Jadwal\nKonsultasi',
-      'icon': Icons.schedule,
-      'color': Colors.blue,
+      'title': 'Jadwal Konsultasi',
+      'image': 'assets/images/jadwalkonsultasi.png',
       'route': '/jadwal-konsultasi',
     },
     {
       'title': 'Booking',
-      'icon': Icons.book_online,
-      'color': Colors.green,
+      'image': 'assets/images/booking.png',
       'route': '/booking',
     },
     {
-      'title': 'Rekam\nMedis',
-      'icon': Icons.medical_information,
-      'color': Colors.orange,
+      'title': 'Rekam Medis',
+      'image': 'assets/images/rekammedis.png',
       'route': '/medical-history',
     },
   ];
@@ -128,8 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   margin: EdgeInsets.symmetric(horizontal: 4),
                   child: _buildMenuCard(
                     title: item['title'],
-                    icon: item['icon'],
-                    color: item['color'],
+                    image: item['image'],
                     onTap: () {
                       if (item['route'] == '/jadwal-konsultasi') {
                         Navigator.of(
@@ -173,58 +169,62 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildMenuCard({
-    required String title,
-    required IconData icon,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          padding: EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey[200]!),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
-                spreadRadius: 1,
-                blurRadius: 4,
-                offset: Offset(0, 2),
+  required String title,
+  required String image,
+  required VoidCallback onTap,
+}) {
+  return MouseRegion(
+    cursor: SystemMouseCursors.click,
+    child: GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey[200]!),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 1,
+              blurRadius: 4,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(8),
               ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Icon(icon, color: color, size: 24),
+              child: Image.asset(
+                image,
+                width: 40,
+                height: 40,
+                fit: BoxFit.contain,
               ),
-              SizedBox(height: 8),
-              Text(
-                title,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black87,
-                  height: 1.2,
-                ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: Colors.black87,
+                height: 1.2,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildProductsSection() {
     return Container(

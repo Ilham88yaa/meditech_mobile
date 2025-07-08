@@ -125,19 +125,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // Logo and Title
-                    Icon(
-                      Icons.medical_services,
-                      size: 50,
-                      color: Color(0xFF9C88FF),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      'Meditech',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF9C88FF),
-                      ),
+                    // Logo and Title
+                    Image.asset(
+                    'assets/images/logo.png',
+                      width: 250,
+                      height: 250,
+                      fit: BoxFit.contain,
                     ),
                     SizedBox(height: 10),
                     Text(
@@ -145,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF9C88FF),
+                        color: Color.fromARGB(255, 49, 5, 72),
                       ),
                     ),
                     SizedBox(height: 30),
@@ -194,7 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         suffixIcon: IconButton(
                           icon: Icon(
                             _obscurePassword ? Icons.visibility : Icons.visibility_off,
-                            color: Color(0xFF9C88FF),
+                            color: Color.fromARGB(255, 44, 0, 58),
                           ),
                           onPressed: () {
                             setState(() {
@@ -242,7 +235,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Text(
                           'Lupa Password?',
                           style: TextStyle(
-                            color: Color(0xFF9C88FF),
+                            color: Color.fromARGB(255, 53, 1, 88),
                             fontSize: 14,
                           ),
                         ),
@@ -256,7 +249,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: ElevatedButton(
                         onPressed: _isLoading ? null : _login,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF9C88FF),
+                          backgroundColor: Color.fromARGB(255, 57, 2, 100),
                           padding: EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -304,7 +297,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             TextSpan(
                               text: 'Daftar',
                               style: TextStyle(
-                                color: Color(0xFF9C88FF),
+                                color: Color.fromARGB(255, 23, 22, 30),
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

@@ -90,7 +90,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Navigator.pushReplacementNamed(context, '/login');
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF9C88FF),
+                backgroundColor: Color(0xFF7B2CBF),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -140,19 +140,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // Logo and Title
-                    Icon(
-                      Icons.medical_services,
-                      size: 50,
-                      color: Color(0xFF9C88FF),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      'Meditech',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF9C88FF),
-                      ),
+                    Image.asset(
+                    'assets/images/logo.png',
+                    width: 250,
+                    height: 250,
+                    fit: BoxFit.contain,
                     ),
                     SizedBox(height: 10),
                     Text(
@@ -160,7 +152,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF9C88FF),
+                        color: Color.fromARGB(255, 62, 1, 143),
                       ),
                     ),
                     SizedBox(height: 30),
@@ -249,7 +241,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: ElevatedButton(
                         onPressed: _isLoading ? null : _register,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF9C88FF),
+                          backgroundColor: Color.fromARGB(255, 59, 0, 101),
                           padding: EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
