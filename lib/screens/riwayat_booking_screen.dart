@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import '../models/booking.dart';
 
 class RiwayatBookingScreen extends StatelessWidget {
-  final List<String> bookingList;
+  final List<Booking> bookingList;
 
   const RiwayatBookingScreen({super.key, required this.bookingList});
 
@@ -18,9 +19,27 @@ class RiwayatBookingScreen extends StatelessWidget {
               : ListView.builder(
                 itemCount: bookingList.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: const Icon(Icons.history),
-                    title: Text(bookingList[index]),
+                  final booking = bookingList[index];
+                  return Card(
+                    color: Colors.deepPurple[50],
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            booking.nama,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text('Dokter: ${booking.dokter}'),
+                          Text('Jadwal: ${booking.tanggal} jam ${booking.jam}'),
+                        ],
+                      ),
+                    ),
                   );
                 },
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../models/booking.dart';
 import 'riwayat_booking_screen.dart';
 
 class BookingScreen extends StatefulWidget {
@@ -22,7 +23,7 @@ class _BookingScreenState extends State<BookingScreen> {
     'Spesialis Gigi - drg. Budi',
   ];
 
-  final List<String> _bookingHistory = [];
+  final List<Booking> _bookingHistory = [];
 
   Future<void> _selectDate() async {
     final DateTime? picked = await showDatePicker(
@@ -74,23 +75,29 @@ class _BookingScreenState extends State<BookingScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse(
-          'http://10.0.2.2:3000/booking',
-        ), // Ganti IP jika tidak pakai emulator
+        Uri.parse('http://172.16.0.2:3000/booking'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(dataBooking),
       );
 
       if (response.statusCode == 200) {
-        final bookingInfo =
-            '${_namaPasienController.text} - $_selectedDokter pada $formattedDate jam $formattedTime';
+        final newBooking = Booking(
+          nama: _namaPasienController.text,
+          dokter: _selectedDokter!,
+          tanggal: formattedDate,
+          jam: formattedTime,
+        );
 
         setState(() {
-          _bookingHistory.add(bookingInfo);
+          _bookingHistory.add(newBooking);
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Booking berhasil: $bookingInfo')),
+          SnackBar(
+            content: Text(
+              'Booking berhasil: ${newBooking.nama} - ${newBooking.dokter} pada ${newBooking.tanggal} jam ${newBooking.jam}',
+            ),
+          ),
         );
 
         Future.delayed(const Duration(milliseconds: 500), () {
@@ -98,9 +105,8 @@ class _BookingScreenState extends State<BookingScreen> {
             context,
             MaterialPageRoute(
               builder:
-                  (context) => RiwayatBookingScreen(
-                    bookingList: List<String>.from(_bookingHistory),
-                  ),
+                  (context) =>
+                      RiwayatBookingScreen(bookingList: _bookingHistory),
             ),
           );
         });
