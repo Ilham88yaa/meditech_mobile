@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'jadwal_konsultasi_screen.dart';
 import 'booking_screen.dart';
 import 'rekam_medis_screen.dart';
+import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
-  String _userName = "Nama Pasien";
+  String _userName = "Hilal Muhamad";
 
   final List<Map<String, dynamic>> _menuItems = [
     {
@@ -63,30 +64,84 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.white,
       elevation: 0,
       automaticallyImplyLeading: false,
-      title: Row(
-        children: [
-          CircleAvatar(
-            backgroundColor: Color(0xFF9C88FF).withOpacity(0.1),
-            child: Icon(Icons.person, color: Color(0xFF9C88FF)),
-          ),
-          SizedBox(width: 12),
-          Text(
-            _userName,
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+      title: GestureDetector(
+        onTap: () {
+          // Navigasi ke profile saat tap pada area nama user
+          _navigateToProfile();
+        },
+        child: Row(
+          children: [
+            Hero(
+              tag: 'profile_avatar',
+              child: CircleAvatar(
+                backgroundColor: Color(0xFF9C88FF).withOpacity(0.1),
+                child: Icon(Icons.person, color: Color(0xFF9C88FF)),
+              ),
             ),
-          ),
-        ],
+            SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _userName,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    'Tap untuk lihat profile',
+                    style: TextStyle(
+                      color: Colors.grey[500],
+                      fontSize: 11,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
       actions: [
         IconButton(
           icon: Icon(Icons.notifications_outlined, color: Colors.grey[600]),
-          onPressed: () {},
+          onPressed: () {
+            // TODO: Implement notification
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Fitur notifikasi akan segera hadir')),
+            );
+          },
+        ),
+        // Tambahkan tombol profile di actions
+        IconButton(
+          icon: Icon(Icons.person_outline, color: Colors.grey[600]),
+          onPressed: _navigateToProfile,
+          tooltip: 'Profile',
         ),
       ],
     );
+  }
+
+  // Method untuk navigasi ke profile dengan error handling
+  void _navigateToProfile() {
+    try {
+      Navigator.pushNamed(context, '/profile').then((value) {
+        // Reset bottom navigation index saat kembali dari profile
+        setState(() {
+          _currentIndex = 0;
+        });
+      });
+    } catch (e) {
+      // Error handling jika route tidak ditemukan
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Gagal membuka halaman profile'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   Widget _buildWelcomeSection() {
@@ -95,18 +150,46 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Selamat datang di Meditech',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
-            ),
-          ),
-          SizedBox(height: 8),
-          Text(
-            'Kesehatan Anda adalah prioritas kami',
-            style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Selamat datang di Meditech',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      'Kesehatan Anda adalah prioritas kami',
+                      style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                    ),
+                  ],
+                ),
+              ),
+              // Tambahkan quick access button ke profile
+              Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFF9C88FF).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.account_circle,
+                    color: Color(0xFF9C88FF),
+                    size: 28,
+                  ),
+                  onPressed: _navigateToProfile,
+                  tooltip: 'Akun Saya',
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -169,62 +252,70 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildMenuCard({
-  required String title,
-  required String image,
-  required VoidCallback onTap,
-}) {
-  return MouseRegion(
-    cursor: SystemMouseCursors.click,
-    child: GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey[200]!),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 1,
-              blurRadius: 4,
-              offset: Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(8),
+    required String title,
+    required String image,
+    required VoidCallback onTap,
+  }) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.grey[200]!),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 4,
+                offset: Offset(0, 2),
               ),
-              child: Image.asset(
-                image,
-                width: 40,
-                height: 40,
-                fit: BoxFit.contain,
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Image.asset(
+                  image,
+                  width: 40,
+                  height: 40,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    // Fallback jika gambar tidak ditemukan
+                    return Icon(
+                      Icons.image_not_supported,
+                      size: 40,
+                      color: Colors.grey[400],
+                    );
+                  },
+                ),
               ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: Colors.black87,
-                height: 1.2,
+              SizedBox(height: 8),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black87,
+                  height: 1.2,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget _buildProductsSection() {
     return Container(
@@ -327,12 +418,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
         switch (index) {
           case 0:
+            // Tetap di home screen
             break;
           case 1:
-            Navigator.pushNamed(context, '/medical-history');
+            // Navigasi ke rekam medis
+            Navigator.pushNamed(context, '/medical-history').then((value) {
+              // Reset index saat kembali
+              setState(() {
+                _currentIndex = 0;
+              });
+            });
             break;
           case 2:
-            Navigator.pushNamed(context, '/profile');
+            // Navigasi ke profile
+            _navigateToProfile();
             break;
         }
       },
@@ -342,12 +441,18 @@ class _HomeScreenState extends State<HomeScreen> {
       unselectedItemColor: Colors.grey[400],
       elevation: 8,
       items: [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
         BottomNavigationBarItem(
           icon: Icon(Icons.description),
           label: 'Rekam Medis',
         ),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: 'Profile',
+        ),
       ],
     );
   }

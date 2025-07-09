@@ -5,6 +5,7 @@ import 'screens/register_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/rekam_medis_screen.dart';
+import 'screens/profile_screen.dart';
 
 void main() {
   runApp(MeditechApp());
@@ -18,7 +19,7 @@ class MeditechApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        fontFamily: 'Roboto',
+        fontFamily: 'Poppins',
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       initialRoute: '/',
@@ -28,6 +29,7 @@ class MeditechApp extends StatelessWidget {
         '/login': (context) => LoginScreen(),
         '/home': (context) => HomeScreen(),
         '/medical-history': (context) => const RekamMedisScreen(),
+        '/profile': (context) => ProfileScreen(),
       },
     );
   }
